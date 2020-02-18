@@ -1,19 +1,17 @@
-import { createBottomTabNavigator } from "react-navigation";
+import { createStackNavigator } from "react-navigation";
 
 /* Screens */
 import ScreenAppHome from "./Home";
 import ScreenAppDetails from "./Details";
 
-const ScreenAppNavigator = createBottomTabNavigator(
+const ScreenAppNavigator = createStackNavigator(
   {
     AppHome: ScreenAppHome,
     AppDetails: ScreenAppDetails
   },
   {
     navigationOptions: { header: null },
-    tabBarOptions: {
-      style: { paddingHorizontal: 7, paddingVertical: 7, height: 60 }
-    }
+    headerMode: "none"
   }
 );
 
