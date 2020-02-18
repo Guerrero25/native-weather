@@ -1,7 +1,6 @@
 import * as React from "react";
-import { TabBarIconProps } from "react-navigation";
 /* Native Base Components */
-import { Text, Button, Icon } from "native-base";
+import { Text, TouchableHighlight } from "react-native";
 /* UI Components */
 import Layout from "../../../components/UI/Layout";
 /* Services */
@@ -12,20 +11,13 @@ const Home = () => {
     <Layout>
       <Text>Screen Home</Text>
 
-      <Button
-        style={{ alignSelf: "center" }}
-        onPress={() => NavigationService.navigate("Auth")}
-      >
+      <TouchableHighlight onPress={() => NavigationService.navigate("Auth")}>
         <Text>Go to Login Screen</Text>
-      </Button>
+      </TouchableHighlight>
     </Layout>
   );
 };
 
-Home.navigationOptions = {
-  tabBarIcon: ({ focused }: TabBarIconProps) => (
-    <Icon name="home" active={focused} />
-  )
-};
+Home.navigationOptions = {};
 
 export default Home;
