@@ -1,17 +1,18 @@
 import * as React from "react";
-/* Native Base Components */
-import { Text } from "react-native";
+import Icon from "react-native-vector-icons/Fontisto";
 /* UI Components */
 import Layout from "../../../components/UI/Layout";
 /* Services */
 import SantiWeatherService from "../../../services/api/SantiWeatherService";
+import SearchButton from "../../../components/UI/SearchButton";
+import Text from "../../../components/UI/Text";
 
 const Home = () => {
   const [temperature, setTemperature] = React.useState(0);
   const [image, setImage] = React.useState("");
 
   React.useEffect(() => {
-    SantiWeatherService.getWeather("Prague")
+    SantiWeatherService.getWeather("Paris")
       .then(weather => {
         setTemperature(weather.temperature);
         setImage(weather.imageURL);
@@ -25,7 +26,11 @@ const Home = () => {
 
   return (
     <Layout imageUrl={image}>
-      <Text>Screen Home</Text>
+      <SearchButton>
+        <Text style={{ fontSize: 16 }}>
+          <Icon name="search" size={16} /> Search
+        </Text>
+      </SearchButton>
 
       <Text>Temperature: {temperature}</Text>
     </Layout>
