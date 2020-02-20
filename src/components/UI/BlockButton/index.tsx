@@ -1,18 +1,27 @@
 import * as React from "react";
-import { StyleSheet, TouchableOpacity } from "react-native";
+import {
+  StyleSheet,
+  TouchableOpacity,
+  TouchableOpacityProps
+} from "react-native";
 import { ReactNode } from "react";
 
-export interface SearchButtonProps {
+export interface BlockButtonProps {
   children?: ReactNode;
 }
 
-const SearchButton: React.SFC<SearchButtonProps> = ({ children }) => {
+const BlockButton: React.SFC<TouchableOpacityProps & BlockButtonProps> = ({
+  children,
+  ...props
+}) => {
   return (
-    <TouchableOpacity style={styles.container}>{children}</TouchableOpacity>
+    <TouchableOpacity style={styles.container} {...props}>
+      {children}
+    </TouchableOpacity>
   );
 };
 
-export default SearchButton;
+export default BlockButton;
 
 const styles = StyleSheet.create({
   container: {
