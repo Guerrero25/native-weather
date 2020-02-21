@@ -4,74 +4,140 @@ import {
   Animated,
   TextInput,
   Dimensions,
-  StyleSheet
+  Keyboard,
+  ImageBackground,
+  FlatList
 } from "react-native";
 import Icon from "react-native-vector-icons/Fontisto";
+/* Custom Hooks */
+import { useWeather } from "../../../hooks/weather";
+import { useAutocompletePlaces } from "../../../hooks/autocomplete";
 /* Components */
-import Text from "../../UI/Text";
-import BlockButton from "../../UI/BlockButton";
+import SearchItem from "./Item";
+/* Styles */
+import { styles } from "./styles";
+/* Configs */
+import UIConfig from "../../UI/UIConfig";
+
+const SPRING_CONFIG = {
+  friction: 10,
+  tension: 30
+};
 
 type SearchListProps = {
   visible?: boolean;
   onChangeVisible?: (visible?: boolean) => void;
+  onPressSuggestion?: (suggestion: GoogleSuggestions) => void;
 };
-function SearchList({ visible, onChangeVisible }: SearchListProps) {
-  const MAX_CONTAINER_HEIGHT = Dimensions.get("window").height;
+function SearchList({
+  visible,
+  onChangeVisible,
+  onPressSuggestion
+}: SearchListProps) {
+  const { suggestions, loading, getSuggestions } = useAutocompletePlaces();
+  const { weatherData } = useWeather();
   const [height] = React.useState(new Animated.Value(0));
+  const [query, setQuery] = React.useState("");
+  const timeoutRef = React.useRef<NodeJS.Timeout | null>(null);
+
+  const MAX_CONTAINER_HEIGHT = Dimensions.get("window").height;
 
   React.useEffect(() => {
     toggleVisible();
   }, [visible]);
 
   return (
-    <View
-      style={[styles.container, { height: visible ? MAX_CONTAINER_HEIGHT : 0 }]}
+    <Animated.View
+      style={[
+        styles.container,
+        {
+          height: height.interpolate({
+            inputRange: [0, 0.5, 1],
+            outputRange: [
+              0,
+              (MAX_CONTAINER_HEIGHT * 2) / 3,
+              MAX_CONTAINER_HEIGHT
+            ]
+          })
+        }
+      ]}
     >
-      <Animated.View
-        style={[
-          styles.body,
-          {
-            height: height.interpolate({
-              inputRange: [0, 0.5, 1],
-              outputRange: ["0%", "60%", "100%"]
-            })
-          }
-        ]}
+      <ImageBackground
+        source={{
+          uri: weatherData.imageURL || UIConfig.DEFAULT_LAYOUT_BACKGROUND
+        }}
+        style={[styles.body]}
+        blurRadius={8}
       >
-        {visible && (
-          <View>
-            <TextInput autoFocus={visible} />
-            <BlockButton
-              onPress={() => onChangeVisible && onChangeVisible(false)}
-            >
-              <Text style={{ fontSize: 16 }}>
-                <Icon name="close" size={16} /> Close
-              </Text>
-            </BlockButton>
-          </View>
-        )}
-      </Animated.View>
-    </View>
+        <View style={[styles.body]}>
+          {visible && (
+            <View style={styles.content}>
+              <View style={styles.form}>
+                <TextInput
+                  autoFocus
+                  style={styles.inputText}
+                  value={query}
+                  onChangeText={handleChangeText}
+                />
+                <Icon
+                  name="close"
+                  color="gray"
+                  size={30}
+                  onPress={handleClose}
+                />
+              </View>
+              <FlatList
+                keyboardShouldPersistTaps="handled"
+                style={styles.suggestionsContainer}
+                data={suggestions}
+                keyExtractor={item => item.id}
+                renderItem={({ item }) => {
+                  return (
+                    <SearchItem
+                      suggestion={item}
+                      onPress={handlePressSuggestion}
+                    />
+                  );
+                }}
+              />
+            </View>
+          )}
+        </View>
+      </ImageBackground>
+    </Animated.View>
   );
 
   function toggleVisible() {
     const toValue = visible ? 1 : 0;
 
-    Animated.spring(height, { toValue, friction: 5 }).start();
+    Animated.spring(height, { toValue, ...SPRING_CONFIG }).start();
+  }
+
+  function handleClose() {
+    Keyboard.dismiss();
+
+    Animated.spring(height, { toValue: 0, ...SPRING_CONFIG }).start(() => {
+      onChangeVisible && onChangeVisible(false);
+    });
+  }
+
+  function handleChangeText(text: string) {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+
+    setQuery(text);
+
+    timeoutRef.current = setTimeout(() => {
+      getSuggestions(text);
+    }, 300);
+  }
+
+  function handlePressSuggestion(suggestion: GoogleSuggestions) {
+    onPressSuggestion && onPressSuggestion(suggestion);
+
+    handleClose();
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    position: "absolute",
-    overflow: "hidden",
-    top: -10,
-    left: -10,
-    right: -10
-  },
-  body: {
-    backgroundColor: "white"
-  }
-});
 
 export default SearchList;

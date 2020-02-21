@@ -1,0 +1,7 @@
+import Config from "react-native-config";
+
+export default {
+  GOOGLE_PLACES_API_BASE_URL: Config.GOOGLE_PLACES_API_BASE_URL,
+  GOOGLE_PLACES_API_KEY: Config.GOOGLE_PLACES_API_KEY,
+  WEATHER_API_BASE_URL: Config.WEATHER_API_BASE_URL
+};

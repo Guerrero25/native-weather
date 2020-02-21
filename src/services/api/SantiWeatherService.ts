@@ -1,6 +1,6 @@
 import ServiceBase from "./ServiceBase";
-
-const API_BASE = "http://litem-weather-webapp.herokuapp.com";
+/* Configs */
+import config from "./config";
 
 class SantiWeatherService extends ServiceBase {
   getWeather(q: string): Promise<WeatherResult> {
@@ -10,4 +10,4 @@ class SantiWeatherService extends ServiceBase {
   }
 }
 
-export default new SantiWeatherService(API_BASE);
+export default new SantiWeatherService(config.WEATHER_API_BASE_URL);

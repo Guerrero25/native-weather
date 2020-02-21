@@ -12,7 +12,9 @@ function WeatherStatus(props: WeatherStatusProps) {
   const { loading, weatherData, getWeather } = useWeather();
 
   React.useEffect(() => {
-    getWeather("Cartagena de Indias");
+    if (!weatherData) {
+      getWeather("Cartagena de Indias");
+    }
   }, []);
 
   return (
@@ -25,11 +27,13 @@ function WeatherStatus(props: WeatherStatusProps) {
 
       <View>
         <Text style={styles.h2}>
-          {loading ? "" : weatherData?.temperature.toFixed(0)} °
+          {loading ? "" : weatherData?.temperature.toFixed(0)}°
         </Text>
       </View>
-      <View>
-        <Text>{loading ? "Loading" : weatherData?.location}</Text>
+      <View style={styles.location}>
+        <Text style={{ textAlign: "center" }}>
+          {loading ? "Loading" : weatherData?.location}
+        </Text>
       </View>
     </View>
   );
@@ -81,6 +85,12 @@ const styles = StyleSheet.create({
   h2: {
     fontSize: 42,
     marginTop: 10
+  },
+  location: {
+    fontSize: 18,
+    width: "50%",
+    textAlign: "center",
+    marginTop: 5
   }
 });
 

@@ -1,9 +1,9 @@
 import * as React from "react";
-import { StyleSheet, View, ImageBackground } from "react-native";
 import { ReactNode } from "react";
+import { StyleSheet, View, ImageBackground } from "react-native";
 
-const DEFAULT_BACKGROUND =
-  "https://images.unsplash.com/photo-1558486012-817176f84c6d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=619&q=80";
+/* Config */
+import UIConfig from "../UIConfig";
 
 export interface LayoutProps {
   children: ReactNode;
@@ -14,7 +14,7 @@ const Layout: React.SFC<LayoutProps> = ({ children, imageUrl }) => {
   return (
     <ImageBackground
       source={{
-        uri: imageUrl || DEFAULT_BACKGROUND
+        uri: imageUrl || UIConfig.DEFAULT_LAYOUT_BACKGROUND
       }}
       style={styles.container}
     >

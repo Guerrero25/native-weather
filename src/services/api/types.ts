@@ -27,3 +27,19 @@ type WeatherIcon =
 type WeatherAPIError = {
   error: string;
 };
+
+type GooglePlacesAutocompleteResult = {
+  status: string;
+  predictions: GoogleSuggestions[];
+};
+
+type GoogleSuggestions = {
+  description: string;
+  distance_meters: number;
+  id: string;
+  matched_substrings: { length: number; offset: number }[];
+  place_id: string;
+  reference: string;
+  terms: { offset: number; value: string }[];
+  types: ("locality" | "political" | "geocode")[];
+};
