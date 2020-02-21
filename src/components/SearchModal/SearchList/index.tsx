@@ -64,7 +64,7 @@ function SearchList({
     >
       <ImageBackground
         source={{
-          uri: weatherData.imageURL || UIConfig.DEFAULT_LAYOUT_BACKGROUND
+          uri: weatherData?.imageURL || UIConfig.DEFAULT_LAYOUT_BACKGROUND
         }}
         style={[styles.body]}
         blurRadius={8}
@@ -129,7 +129,7 @@ function SearchList({
     setQuery(text);
 
     timeoutRef.current = setTimeout(() => {
-      getSuggestions(text);
+      getSuggestions(text).catch(err => {});
     }, 300);
   }
 
