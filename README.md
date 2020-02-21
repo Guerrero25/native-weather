@@ -1,10 +1,12 @@
 # Weather app with React Native
 
+![weather_app_screenshot](.github/images/app_example.png)
+
 #### Dependencies
 
-* React Native 0.61.5
-* React 16.9.0
-* React Navigation 3.11.0
+- React Native 0.61.5
+- React 16.9.0
+- React Navigation 3.11.0
 
 #### Setup
 
@@ -15,7 +17,6 @@ Before you can run the application is necessary to create a `.env` file in the r
     GOOGLE_PLACES_API_BASE_URL=https://maps.googleapis.com/maps/api/place
 
     DEFAULT_LAYOUT_BACKGROUND=
-
 
 The `WEATHER_API_BASE_URL` variable is the base URL to the weather service. It could be your own service but it has to have a route `/weather` where the app is requesting for the weather data. [Here](https://github.com/srLitem/node-weather-webApp) an example of the weather service.
 
