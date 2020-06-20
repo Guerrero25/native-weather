@@ -1,6 +1,8 @@
-# Weather app with React Native
+## Native Weather
 
-![weather_app_screenshot](.github/images/app_example.png)
+A simple app to check the weather built with React Native.
+
+<img src=".github/images/app_example.png" width="200" />
 
 #### Dependencies
 
